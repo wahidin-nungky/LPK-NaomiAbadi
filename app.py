@@ -80,7 +80,7 @@ if not st.session_state["password_correct"]:
     c1, c2, c3 = st.columns([1,1.5,1])
     with c2:
         st.markdown("<br><br>", unsafe_allow_html=True)
-        st.markdown("##🔒Login")
+        st.markdown("## 🔒Login")
         pwd = st.text_input("Password Staf", type="password")
         if st.button("Masuk ke Sistem", use_container_width=True):
             if pwd == "admin123":
