@@ -4,50 +4,57 @@ from datetime import datetime
 
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="CPMI Management System v3.0",
-    page_icon="💎",
+    page_title="CPMI System - Dark Mode",
+    page_icon="🌙",
     layout="wide"
 )
 
-# --- CUSTOM CSS UNTUK UI ELEGAN ---
+# --- CUSTOM CSS UNTUK DARK MODE ELEGAN ---
 st.markdown("""
     <style>
-    /* Mengubah font dan background */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
-    
+    /* Mengubah seluruh latar belakang menjadi gelap */
     .stApp {
-        background-color: #f8f9fa;
-    }
-
-    /* Styling Metric Cards */
-    [data-testid="stMetricValue"] {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1E3A8A;
+        background-color: #0e1117;
+        color: #ffffff;
     }
     
-    [data-testid="stMetricLabel"] {
-        font-weight: 600;
-        color: #64748b;
+    /* Styling Sidebar agar tetap kontras */
+    [data-testid="stSidebar"] {
+        background-color: #161b22;
+        border-right: 1px solid #30363d;
     }
 
-    /* Footer Style */
-    .footer-text {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        font-size: 12px;
-        color: #94a3b8;
-        font-style: italic;
+    /* Mengubah warna teks judul dan label */
+    h1, h2, h3, h4, label, .stMarkdown {
+        color: #e6edf3 !important;
     }
 
-    /* Sidebar Styling */
-    .css-1d391kg {
-        background-color: #ffffff;
+    /* Styling Metric Cards agar menonjol di background gelap */
+    div[data-testid="stMetric"] {
+        background-color: #1c2128;
+        border: 1px solid #30363d;
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    div[data-testid="stMetricValue"] {
+        color: #58a6ff !important;
+    }
+
+    /* Mempercantik Input Box */
+    .stTextInput>div>div>input, .stSelectbox>div>div>div {
+        background-color: #0d1117 !important;
+        color: white !important;
+        border: 1px solid #30363d !important;
+    }
+
+    /* Footer Branding */
+    .branding {
+        font-size: 13px;
+        color: #8b949e;
+        margin-top: 50px;
+        border-top: 1px solid #30363d;
+        padding-top: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -73,89 +80,85 @@ if not st.session_state["password_correct"]:
     c1, c2, c3 = st.columns([1,1.5,1])
     with c2:
         st.markdown("<br><br>", unsafe_allow_html=True)
-        st.info("### 🔐 Secure Access")
+        st.markdown("## 🌙 Secure Login")
         pwd = st.text_input("Password Staf", type="password")
-        if st.button("Log In", use_container_width=True):
+        if st.button("Masuk ke Sistem", use_container_width=True):
             if pwd == "admin123":
                 st.session_state["password_correct"] = True
                 st.rerun()
             else:
-                st.error("Password tidak sesuai.")
+                st.error("Password salah.")
     st.stop()
 
 # --- SIDEBAR NAVIGASI ---
 with st.sidebar:
-    st.markdown("## 💎 CPMI System")
-    st.markdown("`Versi 3.0 Professional` ")
+    st.markdown("### 💎 CPMI Admin")
+    st.markdown("`Night Mode Active` 🌙")
     st.divider()
     
-    menu = st.radio("MAIN MENU", ["📊 Real-time Dashboard", "➕ Registrasi Baru"])
+    menu = st.radio("MENU UTAMA", ["📊 Monitoring Progres", "➕ Registrasi Baru"])
     
     st.divider()
     if st.button("🔓 Keluar"):
         st.session_state["password_correct"] = False
         st.rerun()
     
-    # --- CREDIT DI SIDEBAR ---
-    st.markdown("<br><br>" * 5, unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("**Created by: Wahidin**")
-    st.markdown("*powered by GEMINI*")
+    st.markdown(f"""
+        <div class="branding">
+            <b>Created by: Wahidin</b><br>
+            <i>powered by GEMINI</i>
+        </div>
+    """, unsafe_allow_html=True)
 
 # --- MENU: TAMBAH DATA ---
 if menu == "➕ Registrasi Baru":
-    st.markdown("### ➕ Input Data CPMI")
-    with st.container():
-        with st.form("form_baru", clear_on_submit=True):
-            col1, col2 = st.columns(2)
-            with col1:
-                nama = st.text_input("Nama Lengkap")
-                tgl = st.date_input("Tanggal Daftar", datetime.now())
-                pt = st.text_input("PT Penempatan")
-                sponsor = st.text_input("Sponsor / PL")
-            with col2:
-                agency = st.text_input("Agency Luar Negeri")
-                negara = st.selectbox("Negara Tujuan", ["Taiwan", "Hong Kong", "Singapura", "Malaysia", "Polandia", "Jepang", "Korea Selatan"])
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.form_submit_button("Daftarkan Sekarang", use_container_width=True):
-                new_data = {
-                    'Nama CPMI': nama, 'Tanggal Daftar': tgl, 'PT Penempatan': pt,
-                    'Agency Luar Negeri': agency, 'Negara Tujuan': negara,
-                    'ID SISKO': '⏳ Belum', 'Paspor': '⏳ Belum', 'Ujian Kompetensi': '⏳ Belum',
-                    'Psikotest': '⏳ Belum', 'MCU Full': '⏳ Belum', 'Kontrak Kerja': '⏳ Belum',
-                    'Visa Kerja': '⏳ Belum', 'Status Terbang': 'Proses', 'Sponsor': sponsor
-                }
-                df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
-                df.to_csv(DB_FILE, index=False)
-                st.balloons()
-                st.success(f"Berhasil: {nama} telah terdaftar.")
+    st.markdown("### ➕ Input Data CPMI Baru")
+    with st.form("form_baru", clear_on_submit=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            nama = st.text_input("Nama Lengkap")
+            tgl = st.date_input("Tanggal Daftar", datetime.now())
+            pt = st.text_input("PT Penempatan")
+            sponsor = st.text_input("Sponsor / PL")
+        with col2:
+            agency = st.text_input("Agency Luar Negeri")
+            negara = st.selectbox("Negara Tujuan", ["Taiwan", "Hong Kong", "Singapura", "Malaysia", "Polandia", "Jepang", "Korea Selatan"])
+        
+        if st.form_submit_button("Daftarkan Sekarang", use_container_width=True):
+            new_data = {
+                'Nama CPMI': nama, 'Tanggal Daftar': tgl, 'PT Penempatan': pt,
+                'Agency Luar Negeri': agency, 'Negara Tujuan': negara,
+                'ID SISKO': '⏳ Belum', 'Paspor': '⏳ Belum', 'Ujian Kompetensi': '⏳ Belum',
+                'Psikotest': '⏳ Belum', 'MCU Full': '⏳ Belum', 'Kontrak Kerja': '⏳ Belum',
+                'Visa Kerja': '⏳ Belum', 'Status Terbang': 'Proses', 'Sponsor': sponsor
+            }
+            df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
+            df.to_csv(DB_FILE, index=False)
+            st.success("Data berhasil tersimpan!")
 
 # --- MENU: DASHBOARD ---
-elif menu == "📊 Real-time Dashboard":
-    st.markdown("### 📊 Monitoring Progres")
+elif menu == "📊 Monitoring Progres":
+    st.markdown("### 📊 Dashboard Monitoring")
     
     # Header Statistics
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Total Terdaftar", len(df))
+    m1.metric("Total CPMI", len(df))
     m2.metric("Proses MCU", len(df[df['MCU Full'] == '⏳ Belum']))
     m3.metric("Kontrak Signed", len(df[df['Kontrak Kerja'] == '✅ Signed']))
     m4.metric("Siap Terbang", len(df[df['Status Terbang'] == 'Ready']))
 
-    st.markdown("---")
+    st.divider()
 
-    # Search bar & Filter
-    search_col1, search_col2 = st.columns([2, 1])
-    with search_col1:
-        search = st.text_input("🔍 Filter Data", placeholder="Cari berdasarkan nama, PT, atau sponsor...")
+    # Search bar
+    search = st.text_input("🔍 Filter Nama / PT / Sponsor", placeholder="Ketik di sini...")
     
     if search:
         display_df = df[df.astype(str).apply(lambda x: x.str.contains(search, case=False)).any(axis=1)]
     else:
         display_df = df
 
-    # Data Editor Modern
-    st.write("#### 📑 Progress Tracking")
+    # Data Editor
+    st.write("#### 📑 Progress Tracking Table")
     edited_df = st.data_editor(
         display_df,
         column_config={
@@ -167,15 +170,12 @@ elif menu == "📊 Real-time Dashboard":
             "Kontrak Kerja": st.column_config.SelectboxColumn("Kontrak", options=["⏳ Belum", "✅ Signed"]),
             "Visa Kerja": st.column_config.SelectboxColumn("Visa", options=["⏳ Belum", "✅ Terbit"]),
             "Status Terbang": st.column_config.SelectboxColumn("Status", options=["Proses", "Ready", "✈️ Terbang"]),
-            "Sponsor": st.column_config.TextColumn("Sponsor", help="Nama Petugas Lapangan"),
         },
         use_container_width=True,
-        num_rows="dynamic",
-        disabled=["Tanggal Daftar"] # Tanggal daftar tidak bisa diedit sembarangan
+        num_rows="dynamic"
     )
 
-    # Simpan Button
-    if st.button("💾 Sinkronisasi Data", use_container_width=True):
+    if st.button("💾 Simpan Perubahan Data", use_container_width=True):
         df.update(edited_df)
         df.to_csv(DB_FILE, index=False)
-        st.toast("Database updated successfully!", icon="🌐")
+        st.toast("Database Berhasil Diperbarui!", icon="🌙")
