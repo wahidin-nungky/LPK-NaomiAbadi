@@ -122,7 +122,7 @@ if menu == "➕ Registrasi Baru":
             sponsor = st.text_input("Sponsor / PL")
         with col2:
             agency = st.text_input("Agency Luar Negeri")
-            negara = st.selectbox("Negara Tujuan", ["Taiwan", "Hong Kong", "Singapura", "Malaysia", "Polandia", "Jepang", "Korea Selatan"])
+            negara = st.selectbox("Negara Tujuan", ["Taiwan", "Hong Kong", "Singapura", "Malaysia", "Polandia", "Jepang", "Korea Selatan", "Selandia Baru", "Slovakia"])
         
         if st.form_submit_button("Daftarkan Sekarang", use_container_width=True):
             new_data = {
